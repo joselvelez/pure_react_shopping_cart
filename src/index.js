@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ItemPage from './ItemPage';
+import CartPage from './CartPage';
 import NavBar from './NavBar';
 import './index.css';
 
@@ -13,7 +14,8 @@ const products = [
 
 class App extends React.Component {
     state = {
-        cart: []
+        cart: [],
+        activePage: 'store'
     }
 
     handleAdd = item => {
@@ -23,15 +25,23 @@ class App extends React.Component {
         }));
     };
 
+    handlePageChange = page => {
+        this.setState({ activePage: page });
+    }
+
     render() {
+        const { cart, activePage } = this.state;
         return (
             <div className="App">
-                <NavBar cartCount={this.state.cart.length} />
+                <NavBar cartCount={cart.length} onPageChange={this.handlePageChange} />
                 <main>
+                    {activePage === 'store' ? 
                     <ItemPage
                         onAddToCart={this.handleAdd}
                         items={products}
                     />
+                    : <CartPage />
+                    }
                 </main>
             </div>
         );

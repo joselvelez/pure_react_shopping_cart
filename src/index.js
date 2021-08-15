@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ItemPage from './ItemPage';
 import CartPage from './CartPage';
+import CheckoutPage from './CheckoutPage';
 import NavBar from './NavBar';
 import './index.css';
 
@@ -31,17 +32,18 @@ class App extends React.Component {
 
     render() {
         const { cart, activePage } = this.state;
+        
         return (
             <div className="App">
                 <NavBar cartCount={cart.length} onPageChange={this.handlePageChange} />
                 <main>
-                    {activePage === 'store' ? 
-                    <ItemPage
-                        onAddToCart={this.handleAdd}
-                        items={products}
-                    />
-                    : <CartPage />
-                    }
+                    {activePage === 'store' ? (
+                        <ItemPage onAddToCart={this.handleAdd} items={products}/>
+                    ) : activePage === 'cart' ? (
+                        <CartPage items={cart} onPageChange={this.handlePageChange} />
+                    ) : (
+                        <CheckoutPage items={cart} />
+                    )}
                 </main>
             </div>
         );
